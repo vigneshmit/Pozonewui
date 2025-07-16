@@ -1,0 +1,242 @@
+@import '../App.scss';
+
+.features {
+  background: var(--bg-primary);
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: $gradient-mesh;
+    opacity: 0.02;
+    pointer-events: none;
+  }
+  
+  &-header {
+    text-align: center;
+    margin-bottom: 4rem;
+    opacity: 0;
+    transform: translateY(30px);
+    @include transition(all, 0.8s);
+    
+    &.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      color: $text-primary;
+      margin-bottom: 1rem;
+      position: relative;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 4px;
+        background: $gradient-primary;
+        border-radius: 2px;
+      }
+    }
+    
+    .section-subtitle {
+      font-size: 1.2rem;
+      color: $text-secondary;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+  }
+  
+  &-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    opacity: 0;
+    @include transition(opacity, 1s);
+    
+    &.visible {
+      opacity: 1;
+      
+      .feature-card {
+        animation: scaleIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      }
+    }
+    
+    @media (max-width: $tablet) {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+  }
+}
+
+.feature-card {
+  background: var(--bg-card);
+  border-radius: 20px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 4px 24px rgba(15, 23, 42, 0.06);
+  @include transition(all, 0.3s);
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: scale(0.9);
+  border: 1px solid var(--border-light);
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: $gradient-primary;
+    opacity: 0;
+    @include transition(opacity, 0.3s);
+    z-index: 0;
+  }
+  
+  &:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 40px rgba(15, 23, 42, 0.1);
+    border-color: var(--primary-color);
+
+    &::before {
+      opacity: 0.05;
+    }
+
+    .feature-icon {
+      transform: scale(1.1);
+
+      .icon-bg {
+        transform: scale(1.2);
+        opacity: 0.3;
+      }
+
+      span {
+        transform: scale(1.1);
+      }
+    }
+
+    .feature-title {
+      color: var(--primary-color);
+    }
+
+    .feature-hover-effect {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  .feature-icon {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+    @include flex-center;
+    @include transition(transform, 0.3s);
+    z-index: 1;
+    
+    .icon-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: $gradient-primary;
+      border-radius: 20px;
+      opacity: 0.1;
+      @include transition(all, 0.3s);
+    }
+    
+    span {
+      font-size: 32px;
+      position: relative;
+      z-index: 2;
+      @include transition(transform, 0.3s);
+    }
+  }
+  
+  .feature-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: $text-primary;
+    margin-bottom: 1rem;
+    @include transition(color, 0.3s);
+    position: relative;
+    z-index: 1;
+  }
+  
+  .feature-description {
+    color: $text-secondary;
+    line-height: 1.6;
+    font-size: 1rem;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .feature-hover-effect {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    opacity: 0;
+    transform: translateX(10px);
+    @include transition(all, 0.3s);
+    color: $primary-color;
+    z-index: 1;
+  }
+}
+
+// Staggered animation for feature cards
+@for $i from 1 through 6 {
+  .feature-card:nth-child(#{$i}) {
+    animation-delay: #{$i * 0.1}s;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: $tablet) {
+  .features {
+    &-grid {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+  }
+  
+  .feature-card {
+    padding: 1.5rem;
+    
+    .feature-icon {
+      width: 70px;
+      height: 70px;
+      
+      span {
+        font-size: 28px;
+      }
+    }
+    
+    .feature-title {
+      font-size: 1.1rem;
+    }
+    
+    .feature-description {
+      font-size: 0.9rem;
+    }
+  }
+}
+
+@media (max-width: $mobile) {
+  .features {
+    &-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}

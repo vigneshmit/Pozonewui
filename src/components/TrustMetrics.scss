@@ -1,0 +1,293 @@
+@import '../App.scss';
+
+.trust-metrics {
+  padding: 6rem 0;
+  background: linear-gradient(135deg, 
+    rgba(99, 102, 241, 0.05) 0%, 
+    rgba(139, 92, 246, 0.05) 100%);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%236366f1' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+
+    .section-title {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+
+      .highlight {
+        background: $gradient-primary;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+    }
+
+    .section-subtitle {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+  }
+
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+
+    @media (max-width: $tablet) {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    @media (max-width: $mobile) {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+  }
+
+  .metric-card {
+    background: var(--bg-card);
+    border: 2px solid var(--border-light);
+    border-radius: 20px;
+    padding: 2.5rem;
+    text-align: center;
+    @include transition(all, 0.4s);
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, var(--accent-color, #6366f1) 0%, transparent 100%);
+      opacity: 0;
+      @include transition(opacity, 0.3s);
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, var(--accent-color, #6366f1) 0%, transparent 70%);
+      opacity: 0;
+      @include transition(all, 0.6s);
+      transform: scale(0);
+    }
+
+    &:hover {
+      transform: translateY(-12px) scale(1.02);
+      box-shadow: 0 25px 50px rgba(124, 58, 237, 0.3);
+      border-color: var(--accent-color, #7c3aed);
+
+      &::before {
+        opacity: 0.08;
+      }
+
+      &::after {
+        opacity: 0.03;
+        transform: scale(1);
+      }
+
+      .metric-icon span {
+        transform: scale(1.3) rotate(10deg);
+      }
+
+      .metric-number .count {
+        color: var(--accent-color, #7c3aed);
+      }
+    }
+
+    .metric-icon {
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 1;
+
+      span {
+        font-size: 3.5rem;
+        @include transition(all, 0.4s);
+        display: inline-block;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+      }
+    }
+
+    .metric-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .metric-number {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      margin-bottom: 0.5rem;
+
+      .count {
+        font-size: 3rem;
+        font-weight: 900;
+        background: linear-gradient(135deg, var(--accent-color, #7c3aed) 0%, #a855f7 50%, #06b6d4 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        line-height: 1;
+        @include transition(all, 0.3s);
+      }
+
+      .suffix {
+        font-size: 1.8rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, var(--accent-color, #7c3aed) 0%, #a855f7 50%, #06b6d4 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-left: 0.2rem;
+      }
+    }
+
+    .metric-label {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .metric-description {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    // Animation for visibility
+    opacity: 0;
+    transform: translateY(30px);
+    @include transition(all, 0.6s);
+
+    .trust-metrics.visible & {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .trust-badges {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+
+    @media (max-width: $mobile) {
+      gap: 1rem;
+    }
+
+    .badge {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      @include transition(all, 0.3s);
+
+      &:hover {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+        transform: translateY(-2px);
+      }
+
+      .badge-icon {
+        font-size: 1.1rem;
+      }
+
+      @media (max-width: $mobile) {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+      }
+    }
+  }
+
+  // Responsive adjustments
+  @media (max-width: $tablet) {
+    padding: 4rem 0;
+
+    .section-header {
+      margin-bottom: 3rem;
+    }
+
+    .metrics-grid {
+      margin-bottom: 3rem;
+    }
+
+    .metric-card {
+      padding: 1.5rem;
+
+      .metric-icon span {
+        font-size: 2.5rem;
+      }
+
+      .metric-number .count {
+        font-size: 2rem;
+      }
+
+      .metric-number .suffix {
+        font-size: 1.2rem;
+      }
+    }
+  }
+
+  @media (max-width: $mobile) {
+    padding: 3rem 0;
+
+    .metric-card {
+      padding: 1.25rem;
+
+      .metric-icon span {
+        font-size: 2rem;
+      }
+
+      .metric-number .count {
+        font-size: 1.8rem;
+      }
+    }
+  }
+
+  // Animation for visibility
+  & {
+    opacity: 0;
+    transform: translateY(30px);
+    @include transition(all, 0.6s);
+
+    &.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
